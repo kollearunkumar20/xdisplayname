@@ -4,30 +4,38 @@ import "./App.css";
 function App() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-
-  const bothFilled = firstName.trim() !== "" && lastName.trim() !== "";
+  // Use null to mean "no result element should exist"
+  const [fullName, setFullName] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (bothFilled) {
-      setSubmitted(true);
+
+    const f = firstName.trim();
+    const l = lastName.trim();
+
+    if (f && l) {
+      // Valid submit → render <h3> after form
+      setFullName(`Full Name: ${f} ${l}`);
     } else {
-      setSubmitted(false);
+      // Invalid submit → ensure no sibling element after form
+      setFullName(null);
     }
   };
 
   const handleFirstChange = (e) => {
     const v = e.target.value;
     setFirstName(v);
-    if (v.trim() === "" || lastName.trim() === "") setSubmitted(false);
+    // If either field is incomplete, ensure nothing is rendered after form
+    if (v.trim() === "" || lastName.trim() === "") setFullName(null);
   };
 
   const handleLastChange = (e) => {
     const v = e.target.value;
     setLastName(v);
-    if (firstName.trim() === "" || v.trim() === "") setSubmitted(false);
+    if (firstName.trim() === "" || v.trim() === "") setFullName(null);
   };
+
+  const isDisabled = firstName.trim() === "" || lastName.trim() === "";
 
   return (
     <div className="container">
@@ -41,6 +49,7 @@ function App() {
           onChange={handleFirstChange}
           className="input"
         />
+
         <input
           type="text"
           placeholder="Last Name"
@@ -48,14 +57,14 @@ function App() {
           onChange={handleLastChange}
           className="input"
         />
-        <button type="submit" className="button" disabled={!bothFilled}>
+
+        <button type="submit" className="button" disabled={isDisabled}>
           Submit
         </button>
       </form>
 
-      {submitted && bothFilled && (
-        <h3>{`Full Name: ${firstName} ${lastName}`}</h3>
-      )}
+      {/* Only render this ELEMENT when fullName is a non-null string */}
+      {fullName !== null && <h3>{fullName}</h3>}
     </div>
   );
 }

@@ -4,33 +4,30 @@ import "./App.css";
 function App() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [fullName, setFullName] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  const bothFilled = firstName.trim() !== "" && lastName.trim() !== "";
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (firstName.trim() !== "" && lastName.trim() !== "") {
-      setFullName(`Full Name: ${firstName} ${lastName}`);
+    if (bothFilled) {
+      setSubmitted(true);
     } else {
-      setFullName("");
+      setSubmitted(false);
     }
   };
 
   const handleFirstChange = (e) => {
-    setFirstName(e.target.value);
-    if (e.target.value.trim() === "" || lastName.trim() === "") {
-      setFullName(""); 
-    }
+    const v = e.target.value;
+    setFirstName(v);
+    if (v.trim() === "" || lastName.trim() === "") setSubmitted(false);
   };
 
   const handleLastChange = (e) => {
-    setLastName(e.target.value);
-    if (firstName.trim() === "" || e.target.value.trim() === "") {
-      setFullName(""); 
-    }
+    const v = e.target.value;
+    setLastName(v);
+    if (firstName.trim() === "" || v.trim() === "") setSubmitted(false);
   };
-
-  const isDisabled = firstName.trim() === "" || lastName.trim() === "";
 
   return (
     <div className="container">
@@ -44,7 +41,6 @@ function App() {
           onChange={handleFirstChange}
           className="input"
         />
-
         <input
           type="text"
           placeholder="Last Name"
@@ -52,13 +48,14 @@ function App() {
           onChange={handleLastChange}
           className="input"
         />
-
-        <button type="submit" className="button" disabled={isDisabled}>
+        <button type="submit" className="button" disabled={!bothFilled}>
           Submit
         </button>
       </form>
 
-      {fullName !== "" && <h3>{fullName}</h3>}
+      {submitted && bothFilled && (
+        <h3>{`Full Name: ${firstName} ${lastName}`}</h3>
+      )}
     </div>
   );
 }

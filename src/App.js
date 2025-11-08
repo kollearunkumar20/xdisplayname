@@ -4,7 +4,6 @@ import "./App.css";
 function App() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  // null = render nothing after the form
   const [fullName, setFullName] = useState(null);
 
   const handleSubmit = (e) => {
@@ -16,7 +15,6 @@ function App() {
     if (f && l) {
       setFullName(`Full Name: ${f} ${l}`);
     } else {
-      // invalid submit -> ensure NO element exists after form
       setFullName(null);
     }
   };
@@ -56,7 +54,6 @@ function App() {
           className="input"
         />
 
-        {/* Keep the button ENABLED so Cypress can click it */}
         <button
           type="submit"
           className={`button ${isIncomplete ? "inactive" : ""}`}

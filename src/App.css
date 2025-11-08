@@ -35,7 +35,6 @@
   background-color: #0056b3;
 }
 
-/* Visual "disabled" state without the disabled attribute */
 .button.inactive {
   background-color: #ccc;
   cursor: not-allowed;

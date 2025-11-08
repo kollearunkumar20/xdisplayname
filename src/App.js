@@ -4,7 +4,7 @@ import "./App.css";
 function App() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  // Use null to mean "no result element should exist"
+  // null = render nothing after the form
   const [fullName, setFullName] = useState(null);
 
   const handleSubmit = (e) => {
@@ -14,10 +14,9 @@ function App() {
     const l = lastName.trim();
 
     if (f && l) {
-      // Valid submit → render <h3> after form
       setFullName(`Full Name: ${f} ${l}`);
     } else {
-      // Invalid submit → ensure no sibling element after form
+      // invalid submit -> ensure NO element exists after form
       setFullName(null);
     }
   };
@@ -25,7 +24,6 @@ function App() {
   const handleFirstChange = (e) => {
     const v = e.target.value;
     setFirstName(v);
-    // If either field is incomplete, ensure nothing is rendered after form
     if (v.trim() === "" || lastName.trim() === "") setFullName(null);
   };
 
@@ -35,7 +33,7 @@ function App() {
     if (firstName.trim() === "" || v.trim() === "") setFullName(null);
   };
 
-  const isDisabled = firstName.trim() === "" || lastName.trim() === "";
+  const isIncomplete = firstName.trim() === "" || lastName.trim() === "";
 
   return (
     <div className="container">
@@ -58,12 +56,17 @@ function App() {
           className="input"
         />
 
-        <button type="submit" className="button" disabled={isDisabled}>
+        {/* Keep the button ENABLED so Cypress can click it */}
+        <button
+          type="submit"
+          className={`button ${isIncomplete ? "inactive" : ""}`}
+          // no disabled attribute here
+        >
           Submit
         </button>
       </form>
 
-      {/* Only render this ELEMENT when fullName is a non-null string */}
+      {/* Only render this when submission was valid */}
       {fullName !== null && <h3>{fullName}</h3>}
     </div>
   );

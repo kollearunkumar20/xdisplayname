@@ -9,9 +9,25 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (firstName.trim() === "" || lastName.trim() === "") return;
+    if (firstName.trim() !== "" && lastName.trim() !== "") {
+      setFullName(`Full Name: ${firstName} ${lastName}`);
+    } else {
+      setFullName("");
+    }
+  };
 
-    setFullName(`Full Name: ${firstName} ${lastName}`);
+  const handleFirstChange = (e) => {
+    setFirstName(e.target.value);
+    if (e.target.value.trim() === "" || lastName.trim() === "") {
+      setFullName(""); 
+    }
+  };
+
+  const handleLastChange = (e) => {
+    setLastName(e.target.value);
+    if (firstName.trim() === "" || e.target.value.trim() === "") {
+      setFullName(""); 
+    }
   };
 
   const isDisabled = firstName.trim() === "" || lastName.trim() === "";
@@ -25,7 +41,7 @@ function App() {
           type="text"
           placeholder="First Name"
           value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
+          onChange={handleFirstChange}
           className="input"
         />
 
@@ -33,7 +49,7 @@ function App() {
           type="text"
           placeholder="Last Name"
           value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
+          onChange={handleLastChange}
           className="input"
         />
 
@@ -42,7 +58,7 @@ function App() {
         </button>
       </form>
 
-      {fullName && <h3>{fullName}</h3>}
+      {fullName !== "" && <h3>{fullName}</h3>}
     </div>
   );
 }

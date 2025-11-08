@@ -8,10 +8,12 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setFullName(`${firstName} ${lastName}`);
+
+    if (firstName.trim() === "" || lastName.trim() === "") return;
+
+    setFullName(`Full Name: ${firstName} ${lastName}`);
   };
 
-  // Disable the button if any field is empty
   const isDisabled = firstName.trim() === "" || lastName.trim() === "";
 
   return (
@@ -35,12 +37,12 @@ function App() {
           className="input"
         />
 
-        <button type="submit" disabled={isDisabled} className="button">
+        <button type="submit" className="button" disabled={isDisabled}>
           Submit
         </button>
       </form>
 
-      {fullName && <h3>Full Name: {fullName}</h3>}
+      {fullName && <h3>{fullName}</h3>}
     </div>
   );
 }
